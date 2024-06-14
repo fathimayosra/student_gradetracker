@@ -1,0 +1,59 @@
+import os 
+
+class GradeTracker:
+    def __init__(self,filename):
+        self.filename = filename
+
+    def add_grade(self,subject,grade):
+        try:
+            grade =float(grade)
+            if grade<0 or grade >100:
+                raise ValueError("Invalid grade.Please enter a grade between 0 and 100.")
+            with open(self.filename,'a') as file:
+                file.write(f"{subject}:{grade}\n")
+        except ValueError as e:
+            print(e)
+    def calculate_average(self):
+        try:
+            with open(self.filename,'r') as file:
+                grades = file.readlines()
+                total =0
+                count =0
+                for grade in grades:
+                    subject, grade = grade.strip().split(":")
+                    total+=float(grade)
+                    count +=1
+                average = total/count
+                return average
+        except FileNOtFoundError:
+            print("No grades recorded yet.")
+            return None
+        except Exception as e:
+            print(f"Error calculating average:{e}")
+            return None
+
+def main():
+    tracker =GradeTracker("grades.txt")
+    while True:
+        print("1. Add grade")
+        print("2.Calulate average")
+        print("3.Quit")
+        choice = input("Choose an option:")
+        if choice == "1":
+            subject = input("Enter subject:")
+            grade =input("Enter grade:")
+            tracker.add_grade(subject,grade)
+        elif choice =="2":
+            average = tracker.calculate_average()
+            if average is not None:
+                print(f"Average grade:{average:.2f}")
+        elif chooice =="3":
+            break
+        else:
+            print("Invalid choice.Please try again.")
+
+if __name__ == "__main__":
+       main()
+        
+        
+                            
